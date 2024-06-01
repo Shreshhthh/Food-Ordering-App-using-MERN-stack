@@ -7,7 +7,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 //place order from front end 
 const placeOrder = async(req,res)=>{
 
-    const frontend_url =" http://localhost:5173"
+    const frontend_url =" http://localhost:5174"
 
     try {
         const newOrder = new orderModel({
@@ -45,8 +45,8 @@ const placeOrder = async(req,res)=>{
             payment_method_types:["card"],
             line_items:line_items,
             mode:'payment',
-            success_url:`http://localhost:5173/verify?success=true&orderId=${newOrder._id}`,
-            cancel_url:`http://localhost:5173/verify?success=falseo&rderId=${newOrder._id}`
+            success_url:`http://localhost:5174/verify?success=true&orderId=${newOrder._id}`,
+            cancel_url:`http://localhost:5174/verify?success=false&orderId=${newOrder._id}`
         })
 
         res.json({success:true, session_url:session.url})
@@ -76,7 +76,7 @@ const verifyOrder = async (req,res)=>{
 
 const userOrder = async (req,res) =>{
     try {
-        const orders = await userModel.find({userId:req.body.userId})
+        const orders = await orderModel.find(req.body._id)
         res.json({success:true, data:orders})
     } catch (error) {
         res.json({success:false, message:"cannot load order section"})
@@ -94,4 +94,15 @@ const listOrders = async (req,res)=>{
    }
 }
 
-export {placeOrder,verifyOrder, userOrder, listOrders}
+//api for changing status of order
+const changeStatus = async (req,res)=>{
+    try {
+        await orderModel.findByIdAndUpdate(req.body.orderId,{status:req.body.status})
+        res.json({success:true, message:"Status of the order has been updated"})
+    } catch (error) {
+        console.log(error);
+        res.json({success:false, message:"Cannot update the status of the order"})
+    }
+}
+
+export {placeOrder,verifyOrder, userOrder, listOrders, changeStatus}

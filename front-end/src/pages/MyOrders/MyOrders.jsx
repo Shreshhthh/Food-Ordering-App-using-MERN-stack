@@ -6,22 +6,22 @@ import { assets } from "../../assets/assets";
 
 const MyOrders = () => {
   const { url, token } = useContext(ContextStore);
-  let [data, setData] = useState([]);
-  console.log(token);
+  const [data, setData] = useState([]);
 
   const fetchOrders = async () => {
     const response = await axios.post(
-      "http://localhost:5000/api/order/userorder",
+      url + "/api/order/userorder",
       {},
       { headers: { token } }
     );
     setData(response.data.data);
-    console.log(response.data.data);
-    console.log(token, url);
+    console.log(data);
   };
 
   useEffect(() => {
-    fetchOrders();
+    if (token) {
+      fetchOrders();
+    }
   }, [token]);
 
   return (
@@ -47,6 +47,7 @@ const MyOrders = () => {
                 <span>&#x25cf;</span>
                 <b>{order.status}</b>
               </p>
+              <button>Track Order</button>
             </div>
           );
         })}

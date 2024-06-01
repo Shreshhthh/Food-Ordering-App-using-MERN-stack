@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ContextStore } from "../../Context/StoreContext.jsx";
 
 const Navbar = ({ setShowLogin }) => {
-  const [menu, setMenu] = useState("mobile-app");
+  const [menu, setMenu] = useState("home");
   const { getTotalAmount, token, setToken } = useContext(ContextStore);
 
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ const Navbar = ({ setShowLogin }) => {
   return (
     <div className="navbar">
       <Link to="/">
-        <img src={assets.logo} className="logo" alt="logo" />
+        <img src={assets.newLogo} className="logo" alt="logo" />
       </Link>
       <ul className="navbar-menu">
         <Link
@@ -65,7 +65,7 @@ const Navbar = ({ setShowLogin }) => {
           <div className="navbar-profile">
             <img src={assets.profile_icon} alt="" />
             <ul className="nav-profile-dropdown">
-              <li>
+              <li onClick={() => navigate("/myorders")}>
                 <img src={assets.bag_icon} alt="" />
                 <p>Orders</p>
               </li>
