@@ -47,7 +47,7 @@ const ContextStoreProvider = ({ children }) => {
   };
 
   const fetchFoodList = async () => {
-    const response = await axios.get(`http://localhost:5000/api/food/list`);
+    const response = await axios.get(`${url}/api/food/list`);
     setFoodList(response.data.data);
   };
 
